@@ -6,7 +6,17 @@ No Docker, hosted render service or Studio account is required. The supported se
 
 ## Install
 
+Install the agent skill directly from the public repository:
+
 ```sh
+npx skills add olafBobryk/averlo-tool-code-replay --skill averlo-code-replay
+```
+
+Or clone the complete local tool:
+
+```sh
+git clone https://github.com/olafBobryk/averlo-tool-code-replay.git
+cd averlo-tool-code-replay
 npm ci
 npm run setup
 npm run doctor
@@ -14,7 +24,9 @@ npm run doctor
 
 Setup downloads Chromium. VS Code Web is downloaded locally on the first render, so the first run needs network access. Rendering runs on your computer. Install FFmpeg through your package manager if missing, for example `brew install ffmpeg` on macOS.
 
-The repository root is also the installable `averlo-code-replay` skill. It includes the runtime and lockfile, so a skill installation does not depend on another author's filesystem. The Averlo catalog prompt supplies private repository access and a permanent read-only update key; see [SKILL.md](SKILL.md) and [AGENTS.md](AGENTS.md).
+The repository root is also the installable `averlo-code-replay` skill. It includes the runtime and lockfile, so a skill installation does not depend on another author's filesystem. Source, installation and updates are public; no Averlo login, access key or GitHub credentials are required. See [SKILL.md](SKILL.md) and [AGENTS.md](AGENTS.md).
+
+Before every use, the agent checks the public upstream, safely integrates available updates and announces the actual changes since the last integrated revision. Local edits and commits are preserved. Skill copies can be refreshed with `npx skills update`; agents must check for updates before each run rather than assume an earlier installation is current. [skills.sh](https://skills.sh/docs/faq) discovers skills through CLI installation activity.
 
 ## Plan and render real code
 

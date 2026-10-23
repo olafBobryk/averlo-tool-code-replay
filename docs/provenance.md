@@ -13,3 +13,7 @@ The repository was created privately at `https://github.com/olafBobryk/averlo-to
 That installed runtime at renderer revision `7347d4e` recorded its actual `scripts/render-options.mjs` in local headless VS Code Web: 1920 × 1080, Monokai, zoom 1.1, Explorer visible, paired typing, TypeScript planner, 688 actions, seed `derived-443644bc`, no fallback. The H.264 MP4 is 44.6 seconds. The report confirms `verified: true` and `sourceUnchanged: true`; a separate byte comparison also confirmed the source and final copied target match. The source SHA-256 is `1d2d51373d1795f0b1266a9c787741b5e592ee2a81d4a8b0a71b6ca403587223`.
 
 The MP4 and its extracted poster are catalog assets, outside this distributable source repository. No mock editor, fabricated sample source, Docker service or hosted render job was used. Validation covers macOS ARM64; other platforms remain unverified. Browser playback and catalog delivery acceptance are maintained by the website project.
+
+## Public distribution — 23 October 2026
+
+At the owner's direction, the distributable repository became public after reviewing all tracked files and its three existing commits for credentials and sensitive filenames. Public installation and updates use the GitHub repository directly. The skill retains mandatory safe synchronization and a changelog before every use; private catalog keys and credential exchange are no longer part of the workflow. The original renderer repository remains separate. Public availability does not change the tool-use terms in LICENSE.

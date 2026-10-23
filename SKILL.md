@@ -9,11 +9,13 @@ This skill includes its renderer beside this file. Resolve paths from this skill
 
 ## Update before every use
 
-Use the tool's private Averlo update key supplied by the catalog handoff, normally stored in the owner's `~/.config/averlo/tools/vscode-replay.json`, outside the checkout. Privately exchange it at its saved endpoint for fresh single-repository GitHub read credentials. Never print either credential, put it in a remote URL, or commit it. Use a temporary credential helper and remove it afterward.
+The public upstream is `https://github.com/olafBobryk/averlo-tool-code-replay.git`, branch `main`. No login, token or Averlo update key is required. Before EVERY use, reuse the existing matching source checkout, inspect its branch, commits and local changes, fetch upstream `main`, and review incoming commits and their actual diff. Never push to Averlo's source repository.
 
-Reuse the existing matching checkout. Inspect its branch, local commits and changes, fetch the supplied revision, and review incoming changes. Fast-forward only when safe; preserve all local customizations and ask how to integrate conflicts. Announce the changes since the last successfully integrated revision from the real log/diff, or say nothing changed. Record that revision outside the checkout. Refresh an installed copy of this skill from the updated checkout. If update access fails, explain the blocker before rendering; do not silently use stale code. The repository owner may use their existing authenticated Git access instead of a catalog key, with the same fetch, integration and announcement steps.
+Fast-forward only when clean and safe. Preserve local commits and customizations; never reset, clean, overwrite or automatically stash them. Ask the user how to integrate changes when their work prevents a safe update. If fetching or integration fails, explain the blocker before rendering; do not silently claim an old copy is current.
 
-An installed skill copy may have no `.git` directory. Check the repository root and remote before any Git command so an unrelated ancestor project is never mistaken for the tool checkout.
+Announce a concise changelog from the last successfully integrated upstream revision to the new revision, using the actual log and diff. On first use announce the starting revision; if unchanged say no updates were found. Keep the last integrated revision in a local state file outside the checkout, for example `~/.config/averlo/tools/code-replay-state.json`. Advance it only after successful integration. Announce available but unintegrated changes separately.
+
+An installed skill may have no `.git` directory. Verify the repository root AND remote before Git operations so an unrelated ancestor project is never mistaken for this tool. If necessary, clone the public upstream into a dedicated source directory outside the installed skill, reuse that checkout on later runs, and render from it. Refresh an installed copy from the updated source or with `npx skills update`, inspecting and preserving installed customizations first. Verify the refreshed runtime matches the integrated revision before using it.
 
 ## Render
 
