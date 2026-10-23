@@ -1,4 +1,4 @@
-import { cpSync, lstatSync, realpathSync } from "node:fs"
+import { cpSync, lstatSync, mkdirSync, readdirSync, realpathSync } from "node:fs"
 import path from "node:path"
 
 export function resolveSourceTarget(root, relative) {
@@ -15,17 +15,21 @@ export function resolveSourceTarget(root, relative) {
 
 export function copySourceWorkspace(source, destination) {
   const excluded = new Set(["node_modules", "recordings", "tmp", "dist", "out", "build", "coverage", "secrets"])
-  cpSync(source, destination, {
-    recursive: true,
-    dereference: false,
-    filter(file) {
-      if (file === source) return true
-      const name = path.basename(file)
-      return !name.startsWith(".") && !excluded.has(name) &&
-        !/^tsconfig\.next-/.test(name) && !/\.(?:pem|key|p12|pfx|mp4|webm|mov)$/i.test(name) &&
-        !lstatSync(file).isSymbolicLink()
-    }
-  })
+  const include = file => {
+    const name = path.basename(file)
+    return !name.startsWith(".") && !excluded.has(name) &&
+      !/^tsconfig\.next-/.test(name) && !/\.(?:pem|key|p12|pfx|mp4|webm|mov)$/i.test(name) &&
+      !lstatSync(file).isSymbolicLink()
+  }
+  // Copy entries individually: rendering the tool's own source places the
+  // destination under its excluded tmp/ folder, which cpSync(root, child) rejects.
+  mkdirSync(destination, { recursive: true })
+  for (const name of readdirSync(source)) {
+    const entry = path.join(source, name)
+    if (include(entry)) cpSync(entry, path.join(destination, name), {
+      recursive: true, dereference: false, filter: include
+    })
+  }
 }
 
 export async function stopProcessTree(child) {
