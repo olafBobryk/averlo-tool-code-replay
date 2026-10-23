@@ -13,6 +13,8 @@ Use the tool's private Averlo update key supplied by the catalog handoff, normal
 
 Reuse the existing matching checkout. Inspect its branch, local commits and changes, fetch the supplied revision, and review incoming changes. Fast-forward only when safe; preserve all local customizations and ask how to integrate conflicts. Announce the changes since the last successfully integrated revision from the real log/diff, or say nothing changed. Record that revision outside the checkout. Refresh an installed copy of this skill from the updated checkout. If update access fails, explain the blocker before rendering; do not silently use stale code. The repository owner may use their existing authenticated Git access instead of a catalog key, with the same fetch, integration and announcement steps.
 
+An installed skill copy may have no `.git` directory. Check the repository root and remote before any Git command so an unrelated ancestor project is never mistaken for the tool checkout.
+
 ## Render
 
 - Use the user's real source workspace and target. Resolve an absolute file to its nearest project root. Never invent source, use a mock editor, or substitute a slideshow for a rendered result. If no target was supplied, propose a small real file from the available project and resolve that choice before capture. For a first result from this tool itself, `scripts/render-options.mjs` is its real CLI option parser, not demo code.
