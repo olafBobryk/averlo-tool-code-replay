@@ -17,3 +17,9 @@ The MP4 and its extracted poster are catalog assets, outside this distributable 
 ## Public distribution — 23 October 2026
 
 At the owner's direction, the distributable repository became public after reviewing all tracked files and its three existing commits for credentials and sensitive filenames. Public installation and updates use the GitHub repository directly. The skill retains mandatory safe synchronization and a changelog before every use; private catalog keys and credential exchange are no longer part of the workflow. The original renderer repository remains separate. Public availability does not change the tool-use terms in LICENSE.
+
+## Setup-free opening — version 1.0.1
+
+Capture now starts from the replay extension's explicit editor-ready timestamp after workbench state, target-file opening and focus have settled. Startup editors are disabled and existing tabs are closed in the disposable workspace. A short 250 ms settled-editor beat precedes typing. The runner requires valid ready/complete lifecycle signals and records their capture boundary in the report.
+
+The actual option parser was rendered again on macOS ARM64 with the existing Monokai/1920 × 1080/zoom 1.1/visible Explorer/paired settings. The MP4 is 43.08 seconds; the first decoded frame shows the empty target editor and the 0.6-second frame shows typing. The report confirms exact final source, unchanged original source and `captureStartEvent: "editor-ready"`. No fabricated source or replacement editor was used.

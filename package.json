@@ -1,6 +1,6 @@
 {
   "name": "averlo-code-replay",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "commonjs",
   "description": "Render real source files as verified VS Code coding videos locally, without Docker.",

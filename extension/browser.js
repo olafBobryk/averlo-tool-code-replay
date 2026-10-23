@@ -54,6 +54,7 @@ async function runReplay() {
   const finalContent = textDecoder.decode(await vscode.workspace.fs.readFile(finalUri))
 
   await vscode.workspace.fs.writeFile(targetUri, textEncoder.encode(""))
+  await executeCommandIfAvailable("workbench.action.closeAllEditors")
   await applyWorkbenchState(manifest.ui.explorer)
 
   const document = await vscode.workspace.openTextDocument(targetUri)
@@ -64,8 +65,12 @@ async function runReplay() {
   await executeCommandIfAvailable("workbench.action.focusActiveEditorGroup")
 
   await sleep(manifest.timing?.startDelayMs ?? 1200)
+  console.log(`AVERLO_REPLAY_READY:${Date.now()}`)
+  // Leave one short, settled editor beat before the first edit.
+  await sleep(250)
   await executeReplaySteps(editor, finalContent, manifest.steps)
 
+  console.log(`AVERLO_REPLAY_COMPLETE:${Date.now()}`)
   console.log("VS Code Replay web runner complete.")
   vscode.window.setStatusBarMessage("VS Code Replay complete", 8000)
 }

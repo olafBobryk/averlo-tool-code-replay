@@ -206,6 +206,8 @@ function applyWorkspaceSettings(disposableWorkspace, { theme, zoomLevel }) {
     settings["workbench.colorTheme"] = theme
   }
   settings["window.zoomLevel"] = zoomLevel
+  settings["workbench.startupEditor"] = "none"
+  settings["workbench.tips.enabled"] = false
   mkdirSync(vscodeDir, { recursive: true })
   writeFileSync(settingsPath, `${JSON.stringify(settings, null, 2)}\n`, "utf8")
 }
@@ -396,12 +398,28 @@ async function main() {
     page.on("pageerror", (error) => {
       serverOutput += `[browser:pageerror] ${error.stack ?? error.message}\n`
     })
-    await page.goto(endpoint)
-    await page.waitForSelector(".monaco-workbench", { timeout: 120000 })
-    const captureStartSeconds = (Date.now() - recordingStartedAt) / 1000
-    await page.getByText("VS Code Replay complete").waitFor({ timeout: seconds * 1000 })
+    const readyMarker = "AVERLO_REPLAY_READY:"
+    const completeMarker = "AVERLO_REPLAY_COMPLETE:"
+    const readySignal = page.waitForEvent("console", {
+      predicate: message => message.text().includes(readyMarker),
+      timeout: 120000
+    })
+    const [, readyMessage] = await Promise.all([page.goto(endpoint), readySignal])
+    const readyAt = Number(readyMessage.text().match(/AVERLO_REPLAY_READY:(\d+)/)?.[1])
+    if (!Number.isFinite(readyAt) || readyAt < recordingStartedAt) {
+      throw new Error("The editor did not supply a valid capture-ready timestamp.")
+    }
+    const captureStartSeconds = (readyAt - recordingStartedAt) / 1000
+    const completeMessage = await page.waitForEvent("console", {
+      predicate: message => message.text().includes(completeMarker),
+      timeout: seconds * 1000
+    })
+    const completedAt = Number(completeMessage.text().match(/AVERLO_REPLAY_COMPLETE:(\d+)/)?.[1])
+    if (!Number.isFinite(completedAt) || completedAt <= readyAt) {
+      throw new Error("The editor did not supply a valid capture-complete timestamp.")
+    }
     await page.waitForTimeout(1000)
-    const captureDurationSeconds = (Date.now() - recordingStartedAt) / 1000 - captureStartSeconds
+    const captureDurationSeconds = (completedAt - readyAt) / 1000 + 1
     const observedWorkbench = await page.evaluate(() => {
       const sidebar = document.querySelector(".part.sidebar")
       if (!sidebar) {
@@ -477,6 +495,8 @@ async function main() {
       sourceUnchanged,
       captureStartSeconds,
       captureDurationSeconds,
+      captureStartEvent: "editor-ready",
+      setupFramesExcluded: true,
       manifestVersion: manifest.version,
       ui: {
         zoomLevel: replayOptions.zoomLevel,

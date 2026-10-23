@@ -39,7 +39,7 @@ npm run render -- --source-workspace /absolute/project --target src/component.ts
 
 For a first result without importing another project, render this tool's own option parser: set `--source-workspace` to this repository's absolute path and `--target scripts/render-options.mjs`. This is production source used by the renderer, not a sample or illustration.
 
-`--seconds` limits how long completion may take; it does not force the video to that length. The plan command reports the minimum timeout before capture. The MP4 omits the editor's initial loading period and the final clipboard verification step.
+`--seconds` limits how long completion may take; it does not force the video to that length. The plan command reports the minimum timeout before capture. The MP4 starts when the target file is open, focused and ready to type, after workbench setup. It keeps a short settled-editor beat, then the real replay. Startup screens, tab switching and the final clipboard verification step are excluded. The JSON report records `captureStartEvent: "editor-ready"` and `setupFramesExcluded: true`; a missing readiness signal fails the render.
 
 | Option | Default | Purpose |
 | --- | --- | --- |
