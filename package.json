@@ -1,0 +1,25 @@
+{
+  "name": "averlo-code-replay",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "Render real source files as verified VS Code coding videos locally, without Docker.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "plan": "node scripts/plan.mjs",
+    "render": "node scripts/render-replay.mjs",
+    "build:extension": "node scripts/build-web-extension.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@vscode/test-web": "0.0.81",
+    "esbuild": "0.25.12",
+    "playwright": "1.61.1",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Averlo Code Replay"
+  short_description: "Render real code as local VS Code videos"
+  default_prompt: "Use $averlo-code-replay to render a real source file as a verified local coding video."

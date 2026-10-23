@@ -1,0 +1,11 @@
+node_modules/
+recordings/
+tmp/
+.vscode-test-web/
+extension/dist/
+.env*
+secrets/
+.DS_Store
+*.mp4
+*.webm
+*.log
