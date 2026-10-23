@@ -1,0 +1,13 @@
+dist/
+build/
+node_modules/
+.astro/
+.cache/
+.DS_Store
+*.log
+
+# Documentation fetched from the fastify/fastify repo at build time.
+# The content lives in that repository and must stay there.
+src/content/docs/
+public/docs/
+src/data/**.json

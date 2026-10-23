@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "name": "Markdoc documentation",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "workbench.colorTheme": "Monokai",
+    "window.zoomLevel": 1.1,
+    "workbench.startupEditor": "none",
+    "editor.minimap.enabled": true,
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/.git": true,
+      "**/dist": true,
+      "**/.vitepress/cache": true
+    }
+  }
+}

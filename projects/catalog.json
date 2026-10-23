@@ -1,0 +1,55 @@
+[
+  {
+    "id": "markdoc",
+    "title": "Markdoc documentation",
+    "description": "React components and a complete documentation site.",
+    "directory": "markdoc",
+    "target": "components/Callout.js",
+    "otherTargets": [
+      "components/Section.js",
+      "components/Heading.js"
+    ],
+    "workspace": "Code Replay.code-workspace",
+    "explorer": "visible",
+    "typingPattern": "paired",
+    "pageCount": 21,
+    "sourceFileCount": 88,
+    "upstream": "https://github.com/markdoc/docs",
+    "revision": "0eec556dcf3ee5354bab43424b6ddc828590cbf9"
+  },
+  {
+    "id": "hono",
+    "title": "Hono documentation",
+    "description": "A full documentation site with its real request-routing code.",
+    "directory": "hono",
+    "target": "worker.ts",
+    "otherTargets": [
+      ".vitepress/theme/index.ts"
+    ],
+    "workspace": "Code Replay.code-workspace",
+    "explorer": "visible",
+    "typingPattern": "paired",
+    "pageCount": 91,
+    "sourceFileCount": 155,
+    "upstream": "https://github.com/honojs/website",
+    "revision": "2dd2952ea79dd1c622c9ba7df5a794201ea0e7ac"
+  },
+  {
+    "id": "fastify",
+    "title": "Fastify website",
+    "description": "A project website with community, ecosystem and documentation pages.",
+    "directory": "fastify",
+    "target": "src/lib/href.ts",
+    "otherTargets": [
+      "src/services/github.ts",
+      "src/services/npm.ts"
+    ],
+    "workspace": "Code Replay.code-workspace",
+    "explorer": "visible",
+    "typingPattern": "paired",
+    "pageCount": 9,
+    "sourceFileCount": 112,
+    "upstream": "https://github.com/fastify/website",
+    "revision": "330e92bdb3903200c3343fc379fb1112c56eddef"
+  }
+]

@@ -1,0 +1,18 @@
+---
+import CopyButton from "~/components/CopyButton.astro";
+
+interface Props {
+	command?: string;
+}
+const { command = "npm install fastify" } = Astro.props;
+---
+<div class="inline-flex items-center gap-3 rounded-lg border border-white/10 bg-[#0c0f13] px-4 py-3 font-mono text-sm shadow-sm" data-install data-copy-root>
+	<span class="select-none text-amber">$</span>
+	<code class="text-[#c7cdd4]">{command}</code>
+	<CopyButton
+		text={command}
+		variant="icon-swap"
+		ariaLabel="Copy install command"
+		class="p-1.5 text-[#8b95a1] hover:text-white"
+	/>
+</div>

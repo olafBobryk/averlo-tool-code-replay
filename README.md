@@ -28,6 +28,24 @@ The repository root is also the installable `averlo-code-replay` skill. It inclu
 
 Before every use, the agent checks the public upstream, safely integrates available updates and announces the actual changes since the last integrated revision. Local edits and commits are preserved. Skill copies can be refreshed with `npx skills update`; agents must check for updates before each run rather than assume an earlier installation is current. [skills.sh](https://skills.sh/docs/faq) discovers skills through CLI installation activity.
 
+## Choose a ready-made project
+
+For a first recording, say “Use Code Replay to record Markdoc” to your coding assistant. Three real multipage project packages are included with prepared workspaces:
+
+| Project | Page sources | What the preset records |
+| --- | ---: | --- |
+| Markdoc documentation (`markdoc`) | 21 | Its React Callout component |
+| Hono documentation (`hono`) | 91 | Its request-routing worker |
+| Fastify website (`fastify`) | 9 | Its navigation helper |
+
+```sh
+npm run record
+# Or choose by name:
+npm run record -- markdoc
+```
+
+The chooser uses the project's prepared workspace, Monokai, readable zoom, visible Explorer and paired typing. You do not need to install or run the websites. A recording types one real file with the project's source tree visible; it does not film the running website. The full source, pages and supporting assets are included for browsing and customization. [Project instructions and provenance](projects/README.md) explain each choice. Individual project archives are also available from the repository's releases.
+
 ## Plan and render real code
 
 Choose a real project and source file. `--target` is relative to `--source-workspace`.
@@ -66,4 +84,4 @@ npm test
 
 Planner tests reconstruct actual renderer and extension source. [The replay manifest](docs/replay-manifest.md) describes the range-based edit contract. [Provenance](docs/provenance.md) records the upstream renderer lineage and changes.
 
-Personal and commercial output use is permitted under [the tool terms](LICENSE); redistribution or resale of the tool itself is not. Dependencies keep their own licenses.
+Personal and commercial output use is permitted under [the tool terms](LICENSE); redistribution or resale of the tool itself is not. Dependencies and the bundled MIT project sources keep their own licenses; see [THIRD_PARTY.md](THIRD_PARTY.md).

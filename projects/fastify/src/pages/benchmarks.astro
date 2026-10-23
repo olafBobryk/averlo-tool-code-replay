@@ -1,0 +1,158 @@
+---
+import ButtonLink from "~/components/ButtonLink.astro";
+import BenchCards from "~/components/benchmarks/BenchCards.astro";
+import Icon from "~/components/Icon.astro";
+import PageHeader from "~/components/PageHeader.astro";
+import {
+	BENCHMARK_STATS,
+	BENCHMARKS,
+	POST_BENCHMARK_STATS,
+	POST_BENCHMARKS,
+} from "~/data/site";
+import BaseLayout from "~/layouts/BaseLayout.astro";
+
+const scenarios = [
+	{
+		id: "get",
+		label: "GET",
+		description: "GET / responding with { hello: 'world' }",
+		stats: BENCHMARK_STATS,
+		benchmarks: BENCHMARKS,
+	},
+	...(POST_BENCHMARK_STATS
+		? [
+				{
+					id: "post",
+					label: "POST",
+					description:
+						"POST / with a { hello: 'world' } JSON body, parsed and echoed back",
+					stats: POST_BENCHMARK_STATS,
+					benchmarks: POST_BENCHMARKS,
+				},
+			]
+		: []),
+];
+const hasTabs = scenarios.length > 1;
+---
+
+<BaseLayout
+  title="Benchmarks — Fastify"
+  description="How Fastify compares to other Node.js web frameworks on throughput."
+>
+  <PageHeader eyebrow="// benchmarks" title="Benchmarks">
+    Machines matter, but so does the framework overhead. Fastify was
+    engineered from the ground up to add as little as possible on top of
+    Node.js.
+  </PageHeader>
+
+  <section class="mx-auto max-w-7xl px-4 py-14 sm:px-6 2xl:max-w-[100rem]">
+    {hasTabs && (
+      <div
+        class="mb-4 inline-flex rounded-lg border border-border bg-surface-2 p-1"
+        role="tablist"
+        aria-label="Benchmark scenario"
+        data-bench-tabs
+      >
+        {scenarios.map((scenario, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`bench-tab-${scenario.id}`}
+            aria-selected={i === 0}
+            aria-controls={`bench-panel-${scenario.id}`}
+            data-bench-tab={scenario.id}
+            class:list={[
+              "rounded-md px-4 py-1.5 font-mono text-xs transition-colors",
+              i === 0 ? "bg-surface text-amber-ink" : "text-muted hover:text-fg",
+            ]}
+          >
+            {scenario.label}
+          </button>
+        ))}
+      </div>
+    )}
+
+    {scenarios.map((scenario, i) => (
+      <div
+        id={`bench-panel-${scenario.id}`}
+        {...(hasTabs && {
+          role: "tabpanel",
+          "aria-labelledby": `bench-tab-${scenario.id}`,
+        })}
+        data-bench-panel={scenario.id}
+        class:list={[i === 0 ? "" : "hidden"]}
+      >
+        <p class="mb-6 font-mono text-xs text-muted">{scenario.description}</p>
+        <BenchCards stats={scenario.stats} benchmarks={scenario.benchmarks} />
+      </div>
+    ))}
+
+    <div
+      class="mt-8 rounded-xl border border-border bg-surface/40 p-6 text-sm leading-relaxed text-fg-soft"
+    >
+      <div class="flex items-start gap-3">
+        <span class="mt-0.5 text-amber-ink"
+          ><Icon name="schema" size={18} /></span
+        >
+        <p>
+          These figures are <strong class="text-fg">illustrative</strong>.
+          Real-world results depend on your hardware, Node.js version, and
+          workload. Reproduce them yourself with the official{" "}
+          <a
+            href="https://github.com/fastify/benchmarks"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-amber-ink underline decoration-border-strong underline-offset-2"
+            >fastify/benchmarks</a
+          >
+          {" "}suite and measure against your own routes.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <ButtonLink href="https://github.com/fastify/benchmarks" external>
+        <Icon name="github" size={18} /> Run the benchmark suite
+      </ButtonLink>
+    </div>
+  </section>
+
+  <script>
+    const tablist = document.querySelector("[data-bench-tabs]");
+    if (tablist) {
+      const tabs = tablist.querySelectorAll<HTMLButtonElement>("[data-bench-tab]");
+      const panels = document.querySelectorAll<HTMLElement>("[data-bench-panel]");
+      const select = (id: string) => {
+        tabs.forEach((tab) => {
+          const active = tab.dataset.benchTab === id;
+          tab.setAttribute("aria-selected", active ? "true" : "false");
+          tab.classList.toggle("bg-surface", active);
+          tab.classList.toggle("text-amber-ink", active);
+          tab.classList.toggle("text-muted", !active);
+          tab.classList.toggle("hover:text-fg", !active);
+        });
+        panels.forEach((panel) => {
+          panel.classList.toggle("hidden", panel.dataset.benchPanel !== id);
+        });
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const id = tab.dataset.benchTab ?? "get";
+          select(id);
+          const url = id === "get" ? location.pathname + location.search : `#${id}`;
+          history.replaceState(null, "", url);
+        });
+      });
+
+      // Only react to hashes this toggle owns; e.g. the `#main` skip link
+      // must not reset the selection.
+      const selectFromHash = () => {
+        if (location.hash === "#post") select("post");
+        else if (!location.hash || location.hash === "#get") select("get");
+      };
+      window.addEventListener("hashchange", selectFromHash);
+      selectFromHash();
+    }
+  </script>
+</BaseLayout>
